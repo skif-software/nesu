@@ -63,7 +63,7 @@ function processBulk(param, callback) {
         try {
           fs.writeFileSync(param.seqFile, param.body.last_seq, 'utf8')
         } catch(e) {}
-        console.log('%s - %s - Took: %s, Last Seq: %s', now(), param.db.name, resp.took, param.body.last_seq)
+        console.log('%s - %s - ES took time: %s ms, CouchDB pending: %s, CouchDB Last Seq: %s', now(), param.db.name, resp.took, param.body.pending, param.body.last_seq)
         callback()
       })
     }    
@@ -166,8 +166,12 @@ function continuous(db, nano, es, seqFile) {
 }
 
 function sync(db, callback) {
-  var nano = require('nano')(db.cdb.url || cfg.default.cdb.url),
-    es = new elasticsearch.Client({
+  var nano = require('nano')({
+    url: db.cdb.url || cfg.default.cdb.url,
+    requestDefaults: { "gzip" : db.cdb.gzip || false }
+  })
+
+  var es = new elasticsearch.Client({
       host: db.es.url || cfg.default.es.url,
       apiVersion: db.es.apiVersion || cfg.default.es.apiVersion || '5.6'
     })

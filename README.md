@@ -44,7 +44,8 @@ Also create the *config.json* configuration file in the same folder as **nesu.js
     "mydb2": {
       "cdb": {
         "url": "http://couchdb:5984",
-        "name": "mycouchdb1"
+        "name": "mycouchdb1",
+        "gzip": true
       },
       "es": {
         "url": "http://elasticsearch:9200",
@@ -99,6 +100,8 @@ You need to create/edit the configuration file *config.js* in the same folder as
 `cdb.url`: the url of your CouchDB server endpoint. Optional, defaults to http://localhost:5984
 
 `cdb.name`: name of CouchDB database if different from the db's key name. Optional, defaults to the db's key
+
+`cdb.gzip`: enable "Accept-Encoding: gzip" header in requests to some proxy for CouchDB to get data compressed. Optional, defaults to false
 
 `es.url`: the url of your Elasticsearch endpoint. Optional, defaults to http://localhost:9200
 
